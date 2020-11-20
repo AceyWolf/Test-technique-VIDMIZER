@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NgForm } from '@angular/forms'
-import { AlertComponent } from 'ngx-bootstrap/alert/alert.component'
+import { NgForm } from '@angular/forms';
+import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-formulaire',
@@ -10,6 +11,7 @@ import { AlertComponent } from 'ngx-bootstrap/alert/alert.component'
 })
 export class FormulaireComponent implements OnInit {
 
+modalRef: BsModalRef;
 alerts: any[] = [{
   type: '',
   msg: '',
@@ -27,8 +29,9 @@ listeForm: any[] = [{
   region: ''
 }];
 listeSave: any[] = JSON.parse(localStorage.getItem('listeTableau'));
+index: number;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.httpClient.get('https://geo.api.gouv.fr/regions')
@@ -84,12 +87,16 @@ listeSave: any[] = JSON.parse(localStorage.getItem('listeTableau'));
     localStorage.setItem('listeTableau', JSON.stringify(this.listeSave));
   }
 
-  Suppression(index: number) {
-    console.log(index);
-    this.listeForm.splice(index, 1);
+  openModal(template: TemplateRef<any>, index: number) {
+    this.index = index;
+    this.modalRef = this.modalService.show(template);
+  }
+
+  Suppression() {
+    this.listeForm.splice(this.index, 1);
     this.listeSave = this.listeForm;
     localStorage.setItem('listeTableau', JSON.stringify(this.listeSave));
-    
+    this.modalRef.hide();    
   }
 
   onClosed(dismissedAlert: AlertComponent) {

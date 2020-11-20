@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http'
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons'
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert'
+import { ModalModule } from 'ngx-bootstrap/modal'
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +25,7 @@ import { DigitOnlyModule } from '@uiowa/digit-only'
     HttpClientModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
+    ModalModule.forRoot(),
     BrowserAnimationsModule,
     Ng2SearchPipeModule,
     DigitOnlyModule

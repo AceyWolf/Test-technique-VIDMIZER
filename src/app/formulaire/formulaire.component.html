@@ -43,9 +43,17 @@
                 <th>{{user.prenom}}</th>
                 <th>{{user.tel}}</th>
                 <th>{{user.region}}</th>
-                <th><button type="button" class="btn btn-warning" (click)="Suppression(i)">Supprimer</button></th>
+                <th><button type="button" class="btn btn-warning" (click)="openModal(confirmation, i)">Supprimer</button></th>
             </tr>
         </tbody>
     </table>
 </div>
 </section>
+
+<ng-template #confirmation>
+    <div class="modal-body text-center">
+      <p>Voulez-vous supprimer {{listeForm[index].nom}} {{listeForm[index].prenom}} du tableau?</p>
+      <button type="button" class="btn btn-danger" (click)="Suppression()" >Oui</button>
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()" >Non</button>
+    </div>
+  </ng-template>
