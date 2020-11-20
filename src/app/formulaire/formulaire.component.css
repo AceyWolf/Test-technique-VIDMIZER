@@ -1,0 +1,15 @@
+.Alerte {
+    margin: 10px;
+}
+
+.PageComplete {
+    display: flex;
+    margin: 32px auto;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.Formulaire {
+    display: flex;
+    flex-direction: column;
+}

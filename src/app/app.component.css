@@ -1,0 +1,16 @@
+.content {
+    /* display: flex; */
+    /* margin: 32px auto; */
+    /* padding: 0 16px; */
+    max-width: 960px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+ .Formulaire {
+     background-color: yellow;
+ }
+
+ .Tableau {
+     background-color: blue;
+ }
