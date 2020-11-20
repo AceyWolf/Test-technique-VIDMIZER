@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormulaireComponent } from './formulaire/formulaire.component';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { DigitOnlyModule } from '@uiowa/digit-only' 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +24,9 @@ import { FormulaireComponent } from './formulaire/formulaire.component';
     HttpClientModule,
     ButtonsModule.forRoot(),
     AlertModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    Ng2SearchPipeModule,
+    DigitOnlyModule
   ],
   providers: [AlertConfig],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms'
 import { AlertComponent } from 'ngx-bootstrap/alert/alert.component'
 
 @Component({
@@ -13,24 +14,20 @@ alerts: any[] = [{
   type: '',
   msg: '',
   timeout: 1}];
-nom: string = '';
-prenom: string = '';
-telephone: number;
+nom: string;
+prenom: string;
+telephone: string;
+regionChoisi: any = {code: '', nom:''};
+recherche: string = '';
 listeRegions: any;
-regionChoisi: any = {code:'', nom:''};
 listeForm: any[] = [{
   nom: '',
   prenom: '',
-  tel: 0,
+  tel: '',
   region: ''
 }];
 listeSave: any[] = JSON.parse(localStorage.getItem('listeTableau'));
-fakeList: any[] = [{
-  nom: '',
-  prenom: '',
-  tel: 0,
-  region: ''
-}];
+
   constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
@@ -40,46 +37,59 @@ fakeList: any[] = [{
     console.log(this.listeRegions)});
 
     this.listeForm.splice(0, 1);
-    this.fakeList.splice(0 , 1);
     console.log(this.listeSave);
     this.listeForm = this.listeSave;
-    
-    this.fakeList.push({nom: 'H', prenom: 'Bob', tel: 1111111111, region: 'Paris'});
-    this.fakeList.push({nom: 'I', prenom: 'Rob', tel: 2222222222, region: 'Paris'});
-    this.fakeList.push({nom: 'Z', prenom: 'Robert', tel: 333333333, region: 'Paris'});
-    this.fakeList.push({nom: 'A', prenom: 'Booba', tel: 4444444444, region: 'Paris'});
-    this.fakeList.push({nom: 'D', prenom: 'Bobby', tel: 5555555555, region: 'Paris'});
-    this.fakeList.sort();
 
   }
 
-  validerSaisie() {
-    // this.alerts.push({
-    //   type: "warning",
-    //   msg: "le bouton fonctionne",
-    //   timeout: 5000});
-    if ( this.nom !== '' && this.prenom !== '' && this.regionChoisi !== undefined ) {
+  validerSaisie(form: NgForm) {
       if (this.listeForm.length === 0) {
-        this.listeForm.push ({nom: this.nom, prenom: this.prenom, tel: this.telephone, region: this.regionChoisi.code+' - '+this.regionChoisi.nom});
-        console.log(this.listeForm[0]);
+        this.listeForm.push ({nom: form.value['nom'], prenom: form.value['prenom'], tel: form.value['telephone'], region: form.value['region']});
+        form.reset();
       } else {
         let ajoutFait = false;
         for (let i=0; i < this.listeForm.length; i++) {
-          console.log(this.nom.localeCompare(this.listeForm[0].nom))
-          if (this.nom.localeCompare(this.listeForm[i].nom) === -1 ) {
-            this.listeForm.splice(i, 0, {nom: this.nom, prenom: this.prenom, tel: this.telephone, region: this.regionChoisi.code+' - '+this.regionChoisi.nom});
-            ajoutFait = true;
-            break;
-          }
+          if (form.value['telephone'].localeCompare(this.listeForm[i].tel) === 0) {
+            this.alerts.push({
+              type: "warning",
+              msg: "Ce numéro est déjà présent dans le tableau",
+              timeout: 5000});
+              ajoutFait =true;
+              break;
+          } else {
+              if (form.value['nom'].localeCompare(this.listeForm[i].nom) === -1 ) {
+                this.listeForm.splice(i, 0, {nom: form.value['nom'], prenom: form.value['prenom'], tel: form.value['telephone'], region: form.value['region']});
+                ajoutFait = true;
+                form.reset();
+                break;
+              } else if (form.value['nom'].localeCompare(this.listeForm[i].nom) === 0) {
+                if (form.value['prenom'].localeCompare(this.listeForm[i].prenom) === 0) {
+                  this.alerts.push({
+                      type: "warning",
+                      msg: "Cette personne est déjà présente dans le tableau",
+                      timeout: 5000});
+                      ajoutFait =true;
+                      break;
+                }
+              }
+            }
         }
         if (ajoutFait === false) {
-          this.listeForm.push ({nom: this.nom, prenom: this.prenom, tel: this.telephone, region: this.regionChoisi.code+' - '+this.regionChoisi.nom});
+          this.listeForm.push ({nom: form.value['nom'], prenom: form.value['prenom'], tel: form.value['telephone'], region: form.value['region']});
+          form.reset();
         }
       }
-    }
     console.log(this.listeForm);
     this.listeSave = this.listeForm;
     localStorage.setItem('listeTableau', JSON.stringify(this.listeSave));
+  }
+
+  Suppression(index: number) {
+    console.log(index);
+    this.listeForm.splice(index, 1);
+    this.listeSave = this.listeForm;
+    localStorage.setItem('listeTableau', JSON.stringify(this.listeSave));
+    
   }
 
   onClosed(dismissedAlert: AlertComponent) {

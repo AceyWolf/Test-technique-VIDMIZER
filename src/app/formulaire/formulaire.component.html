@@ -3,25 +3,29 @@
 </div>
 <section class="PageComplete">
 <div class="Formulaire">
-    <label>Nom</label>
-    <input id ="Nom" [(ngModel)]="nom" placeholder="Nom">
+    <form  (ngSubmit)= "validerSaisie(form)" #form="ngForm" >
+        <label for="Nom">Nom</label>
+        <input id ="Nom" name="nom" class="form-control" placeholder="Nom" ngModel required>
 
-    <label>Prénom</label>
-    <input id="Prenom" [(ngModel)]="prenom" placeholder="Prénom">
+        <label for="Prenom">Prénom</label>
+        <input id="Prenom" name="prenom" class="form-control" placeholder="Prénom" ngModel required>
 
-    <label>Telephone</label>
-    <input id="Telephone" [(ngModel)]="telephone" type="number" minlength="10" placeholder="0123456789">
+        <label for="Telephone">Numéro de telephone</label>
+        <input id="Telephone" name="telephone" class="form-control" type="text" digitOnly inputmode="numeric" required minlength="10" pattern="[0-9]*" placeholder="0123456789" ngModel required>
 
-    <label>Région</label>
-    <select name="Regions" [(ngModel)]="regionChoisi">
-        <option [ngValue]="reponse" *ngFor="let reponse of listeRegions">{{reponse.code}} - {{reponse.nom}}</option>
-    </select>
-    <br>
+        <label for="Region">Région</label>
+        <select id="Region" name="region" class="form-control" ngModel required>
+            <option [ngValue]="reponse.nom" *ngFor="let reponse of listeRegions">{{reponse.code}} - {{reponse.nom}}</option>
+        </select>
+        <br>
 
-    <button type="button" class="btn btn-primary" (click)="validerSaisie()">Valider Saisie</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Valider Saisie</button> <!-- (click)="validerSaisie()" -->
+    </form>
 </div>
 
-<div class="Tableau">
+<div class="Tableau" *ngIf="listeForm.length > 0">
+    <label>Rechercher &nbsp;</label>
+    <input [(ngModel)]="recherche">
     <table>
         <thead>
             <tr>
@@ -29,15 +33,17 @@
                 <th>Prénom</th>
                 <th>Telephone</th>
                 <th>Région</th>
+                <th>Action</th>
             </tr>
         </thead>
 
         <tbody>
-            <tr *ngFor="let user of listeForm">
+            <tr *ngFor="let user of listeForm | filter: recherche; let i = index">
                 <th>{{user.nom}}</th>
                 <th>{{user.prenom}}</th>
                 <th>{{user.tel}}</th>
                 <th>{{user.region}}</th>
+                <th><button type="button" class="btn btn-warning" (click)="Suppression(i)">Supprimer</button></th>
             </tr>
         </tbody>
     </table>
