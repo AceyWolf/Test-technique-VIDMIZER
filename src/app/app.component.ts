@@ -7,7 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'test-technique-Vidmizer';
-  nom: string = "test";
-  prenom: string;
-  telephone: number;
 }

@@ -1,5 +1,6 @@
 .Alerte {
     margin: 10px;
+    text-align: center;
 }
 
 .PageComplete {
@@ -16,17 +17,18 @@
 
 table {
     font-family: arial, sans-serif;
+    border: 1px solid black;
     border-collapse: collapse;
     width: 100%;
   }
   
-  td, th {
-    border: 1px solid black;
+td, th {
+    border-top: 1px solid rgb(158, 158, 158);
     text-align: left;
     padding: 8px;
     text-transform: capitalize;
   }
   
-  tr:nth-child(even) {
+tr:nth-child(even) {
     background-color: #dddddd;
   }

@@ -1,9 +1,9 @@
 <div class="Alerte" *ngFor="let alert of alerts">
-    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{alert.msg}}</alert>
-</div>
-<section class="PageComplete">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)" class="center"><strong>{{alert.msg}}</strong></alert> <!--Les messages d'erreurs seront affiché en haut de page-->
+</div> 
+<section class="PageComplete"> 
 <div class="Formulaire">
-    <form  (ngSubmit)= "validerSaisie(form)" #form="ngForm" >
+    <form  (ngSubmit)= "validerSaisie(form)" #form="ngForm" > <!--Formulaire Angular afin de gerer directement l'activation du bouton de validation avec-->
         <label for="Nom">Nom</label>
         <input id ="Nom" name="nom" class="form-control" placeholder="Nom" ngModel required>
 
@@ -23,10 +23,11 @@
     </form>
 </div>
 
-<div class="Tableau" *ngIf="listeForm.length > 0">
-    <label>Rechercher &nbsp;</label>
+<div class="Tableau" *ngIf="listeForm.length > 0"> <!--Affiche cette partie de la page uniquement s'il y a du contenu dans le tableau-->
+    <label>Rechercher &nbsp;</label> <!--Rechercher dans le tableau et filtrer l'affichage-->
     <input [(ngModel)]="recherche">
-    <table>
+    
+    <table> <!--Tableau des saisies effectués depuis le formulaire-->
         <thead>
             <tr>
                 <th>Nom</th>
@@ -38,22 +39,22 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let user of listeForm | filter: recherche; let i = index">
-                <th>{{user.nom}}</th>
-                <th>{{user.prenom}}</th>
-                <th>{{user.tel}}</th>
-                <th>{{user.region}}</th>
-                <th><button type="button" class="btn btn-warning" (click)="openModal(confirmation, i)">Supprimer</button></th>
+            <tr *ngFor="let saisie of listeForm | filter: recherche; let i = index"> <!--Affiche chaque saisies présente dans la liste ainsi qu'un bouton pour supprimer la ligne-->
+                <th>{{saisie.nom}}</th>
+                <th>{{saisie.prenom}}</th>
+                <th>{{saisie.tel}}</th>
+                <th>{{saisie.region}}</th>
+                <th><button type="button" class="btn btn-warning" (click)="openModal(confirmation, i)">Supprimer</button></th> 
             </tr>
         </tbody>
     </table>
 </div>
 </section>
 
-<ng-template #confirmation>
+<ng-template #confirmation> <!--Modal de confirmation pour la suppression d'un ligne-->
     <div class="modal-body text-center">
-      <p>Voulez-vous supprimer {{listeForm[index].nom}} {{listeForm[index].prenom}} du tableau?</p>
-      <button type="button" class="btn btn-danger" (click)="Suppression()" >Oui</button>
-      <button type="button" class="btn btn-default" (click)="modalRef.hide()" >Non</button>
+      <p>Voulez-vous supprimer {{nomSuppr}} {{prenomSuppr}} du tableau?</p>
+      <button type="button" class="btn btn-danger" (click)="Suppression()" >Oui</button> <!--Appelle la fonction de suppression-->
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()" >Non</button> <!--Cache le modal si l'utilisateur ne souhaite finalement pas supprimer la ligne-->
     </div>
   </ng-template>
